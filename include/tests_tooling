@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#################################################################################
+#
+#   Lynis
+# ------------------
+#
+# Copyright 2007-2012, Michael Boelen (michael@rootkit.nl), The Netherlands
+# Web site: http://www.rootkit.nl
+#
+# Lynis comes with ABSOLUTELY NO WARRANTY. This is free software, and you are
+# welcome to redistribute it under the terms of the GNU General Public License.
+# See LICENSE file for usage of this software.
+#
+#################################################################################
+#
+    FILE_INT_TOOL_FOUND=0		# Boolean, file integrity tool found
+#
+#################################################################################
+#
+    InsertSection "Software: System tooling"
+
+    # Test        : TOOL-5002
+    # Description : Check if cfagent (cfengine) is installed
+    Register --test-no TOOL-5002 --weight L --network NO --description "AFICK availability"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	logtext "Test: Checking AFICK binary"
+	if [ ! "${AFICKBINARY}" = "" ]; then
+	    logtext "Result: AFICK is installed (${AFICKBINARY})"
+	    FILE_INT_TOOL_FOUND=1
+	    Display --indent 2 --text "- Checking AFICK..." --result FOUND --color GREEN
+	  else	
+	    logtext "Result: AFICK is not installed"
+	    Display --indent 2 --text "- Checking AFICK..." --result "NOT FOUND" --color WHITE
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : TOOL-5004
+    # Description : Check if Puppetis installed
+    Register --test-no TOOL-5004 --weight L --network NO --description "AIDE availability"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	logtext "Test: Checking AIDE binary"
+	if [ ! "${AIDEBINARY}" = "" ]; then
+	    logtext "Result: AIDE is installed (${AIDEBINARY})"
+	    FILE_INT_TOOL_FOUND=1
+	    Display --indent 2 --text "- Checking AIDE..." --result FOUND --color GREEN
+	  else	
+	    logtext "Result: AIDE is not installed"
+	    Display --indent 2 --text "- Checking AIDE..." --result "NOT FOUND" --color WHITE
+	fi
+    fi
+#
+#################################################################################
+#
+#
+#################################################################################
+#
+    wait_for_keypress
+
+#
+#================================================================================
+# Lynis - Copyright 2007-2012, Michael Boelen - www.rootkit.nl - The Netherlands
